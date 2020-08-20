@@ -1,0 +1,49 @@
+<header>
+
+ <nav class="navbar navbar-expand-md navbar-light bg-secondary">
+        <a href="#" class="navbar-brand">Brand</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav">
+                
+                <%=link_to "Home" , root_path, class: "nav-item nav-link"%>
+                <a href="#" class="nav-item nav-link">Profile</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Messages</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Inbox</a>
+                        <a href="#" class="dropdown-item">Sent</a>
+                        <a href="#" class="dropdown-item">Drafts</a>
+                    </div>
+                </div>
+            </div>
+            <form class="form-inline">
+                <div class="input-group">                    
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            <div class="navbar-nav">
+               
+                 <%if user_signed_in?%>
+
+                  <%=link_to "My Account" , myaccount_path, class: "nav-item nav-link"%>
+                  <%= button_to "logout", destroy_user_session_path, method: :delete , class: " nav-item btn btn-default btn-sm" %> 
+                              
+                <%else%>
+
+                  <%= link_to "Register",  new_user_registration_path , class: "nav-item nav-link"%>
+                  <%=link_to "Login" , new_user_session_path , class: "nav-item nav-link"%>
+
+                <% end %>
+            </div>
+        </div>
+    </nav>
+<div style="height:20px">
+</div>
+</header>

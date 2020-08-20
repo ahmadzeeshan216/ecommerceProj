@@ -1,0 +1,17 @@
+<div class="cpt_product_description " id="single_cmnt<%=comment.id%>">
+                
+    <p> <strong><%= comment.user.name%></strong></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <p> <%= comment.body%></p>
+        </div>
+        <div class="col-sm-4">
+        <% if user_signed_in? %>
+            <% if current_user.id==comment.user_id %>
+            <%= button_to "delete", { :controller => 'comments',:action => 'destroy', :id => comment.id }, method: :delete, remote: :true , class: "btn btn-danger btn-sm" %> 
+            <%end%>
+        <%end%>
+        </div>
+    </div>
+    
+ </div>

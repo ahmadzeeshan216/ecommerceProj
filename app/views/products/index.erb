@@ -1,0 +1,37 @@
+
+
+<div class="container">
+  <ul class="breadcrumb">
+    
+    <li><a href="category.html">My Products</a></li>
+  </ul>
+  <div class="row">
+    
+    <div id="content" class="">
+      
+      <% @products.each do |p| %>
+      
+        <div class="product-layout product-list col-xs-3">
+          <div class="product-thumb">
+            <div class="image product-imageblock"> <a href="products/<%=p.id%>"><%= image_tag url_for(p.images[0]), :style => "height:200px;width:250px" ,:title => p.name,  :class => "img-responsive" %> </a>
+              
+            </div>
+            <div class="caption product-detail">
+              
+             <p class="title product-price"><span class="price"> <%= p.name%>  </span></p>
+             <p class=" product-price"><span class="">Price : <%= p.price%> Rs  </span></p>
+            </div>
+            <div class="button-group">
+              
+              <button type="button"  class="addtocart-btn">  <%= link_to "Edit", edit_product_path(p.id) %></button>
+              <button type="button" class="addtocart-btn" >Delete</button>
+             
+            </div>
+           </div>
+        </div>
+     <%end%> 
+      
+      </div>
+    </div>
+  </div>
+</div>

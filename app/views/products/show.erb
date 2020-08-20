@@ -1,0 +1,154 @@
+<div class="container">
+ 
+  <div class="row">
+    
+    <div id="content" class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="thumbnails">
+              <div class="w3-content w3-display-container">
+                <% @product.images.each do |img| %>
+                  <div class="w3-display-container mySlides">             
+                        <%= image_tag url_for(img), :style => "width:100%; height:500px" %>
+                  </div>
+                <% end %>
+                  <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
+                  <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
+
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h1 class="productpage-title"><%= @product.name%></h1>
+          <hr>
+          <ul class="list-unstyled productinfo-details-top">
+            
+            <li><span class="productinfo-tax">Price: <%= @product.price%> Rs</span></>
+            <hr>
+            <li><span class="productinfo-tax">Available Quantity: <%= @product.quantity%> </span></>
+            <hr>
+            <li><span class="productinfo-tax">Serial Number: <%= @product.serial_number%> </span></>
+          </ul>
+          <hr>
+          
+          
+          <div id="product">
+            <div class="form-group">
+              <label class="control-label qty-label" for="input-quantity">Qty</label>
+              <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control productpage-qty" />
+              <input type="hidden" name="product_id" value="48" />
+              <div class="btn-group">
+                <button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+                <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart">Add to Cart</button>
+                <button type="button" data-toggle="tooltip" class="btn btn-default compare" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+
+
+
+<div class="row">
+    <div id="content" class="col-sm-12">
+
+            <ul class="breadcrumb">
+                <li><a>Description</a></li>
+            </ul>
+
+            <div class="tab-content">
+            
+            <div class="tab-pane active" id="tab-description">
+                <div class="cpt_product_description ">
+                <div>
+                    <p><%= @product.description %></p>
+                </div>
+                </div>
+                
+            </div>
+            </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div id="content" class="col-sm-12">
+
+            <ul class="breadcrumb">
+                <li><a>Reviews</a></li>
+            </ul>
+
+      
+            
+            <div id="comments_div">
+                
+                <% @product.comments.each do |c| %>
+                  <%= render partial: "comments/comment_body", locals: {comment: c} %>
+                <%end%>
+            </div>
+            
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div id="content" class="col-sm-12">
+    <h2>Write a review</h2>
+    <% if user_signed_in? %>
+        <%= form_for :comment , url:comments_path(), remote: :true, :html => {:id => "comment_form"}  do |f| %>
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <div id="review"></div>
+              
+              
+              <div class="form-group required">
+                <div class="col-sm-12">
+                  <label class="control-label" for="input-review">Your Review</label>
+                  <textarea name="body" id="cmnt_body" rows="5" id="input-review" class="form-control"></textarea>
+                  
+                  <input type="hidden" name="product_id" id="product_id" value=<%= @product.id%>>
+                </div>
+              
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                  <button type="submit" id="cmnt_submin" data-loading-text="Loading..." class="btn btn-primary">Comment</button>
+              </div>
+        
+        <%end%>
+
+    <%else%>
+      <div class="alert alert-danger" role="alert">
+        you must login in order to add comment
+      </div>
+      
+
+    <%end%>
+    </div>
+
+
+  </div>
+  </div>
+
+<script>
+
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+    showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    if (n > x.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = x.length }
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+    }
+    x[slideIndex - 1].style.display = "block";
+}
+</script>
