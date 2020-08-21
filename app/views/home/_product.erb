@@ -1,0 +1,15 @@
+
+<div class="col-sm-3" id="single_product_<%=product.id%>" >
+		<div href="#" class="card card-product-grid" style="border-radius:25px">
+			<a href="products/<%=product.id%>" class="img-wrap"> <%= image_tag url_for(product.images[0]), :style => "height:200px;width:100%" ,:title => product.name %> </a>
+		</div>
+
+        <div class="card-body">
+            <h3 class="card-title"><strong><%=product.name %></strong></h3>
+            <p class="card-text"><strong>Price : </strong><%=product.price %> Rs</p>
+          
+           
+            
+        </div>
+
+</div> <!-- col.// -->
