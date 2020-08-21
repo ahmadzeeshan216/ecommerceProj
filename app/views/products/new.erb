@@ -6,7 +6,7 @@
             <h1>Add a New Product</h1>
             
             <%= form_for :product , url:products_path do |f| %>
-            
+            <%= render partial: "shared/error_partial", locals: {object: @product} %>
                 <fieldset id="account">
                     
                     <div class="form-group ">   

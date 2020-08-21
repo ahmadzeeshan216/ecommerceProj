@@ -1,2 +1,6 @@
+<% if @comment.errors.any? %>
+    $("#error_div").html('<%= j render partial: "shared/error_partial", locals: {object: @comment} %>')
+<%else%>
+    $("#comments_div").append('<%= j render partial: "comments/comment_body", locals: {comment: @comment} %>')
+<%end%>
 
-$("#comments_div").append('<%= j render partial: "comments/comment_body", locals: {comment: @comment} %>')

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-    before_action :authenticate_user!, only:[:create, :destroy]
+    before_action :authenticate_user!
  
     
     def create
@@ -24,6 +24,21 @@ class CommentsController < ApplicationController
             format.html
             format.json {render json: {r: "made"}}
         end
+    end
+
+
+    def update
+        
+        @comment=Comment.find(params[:id])
+       
+        @comment.update(body: params[:body])
+           
+        respond_to do |format|
+            format.js { render :update}
+            format.html
+            format.json {render json: {r: "made"}}
+        end
+
     end
 private
 

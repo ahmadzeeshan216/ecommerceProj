@@ -64,3 +64,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'devise'
+
+gem "thinking-sphinx",
+  :git    => "https://github.com/pat/thinking-sphinx.git",
+  :branch => "develop",
+  :ref    => "d1e3603c9e"

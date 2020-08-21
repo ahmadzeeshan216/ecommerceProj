@@ -1,0 +1,5 @@
+ <% if flash[:messages] %>
+2    <% flash[:messages].each do |message| %>
+3      <p class="alert alert-success"><%= message%></p> <br>
+4    <% end %>
+5  <% end %>

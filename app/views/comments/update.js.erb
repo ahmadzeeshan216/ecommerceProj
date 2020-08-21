@@ -1,0 +1,7 @@
+
+<% if @comment.errors.any? %>
+    $("#update_error_div").html('<%= j render partial: "shared/error_partial", locals: {object: @comment} %>')
+<%else%>
+    $("#cmnt_body_para_<%=@comment.id%>").text("<%=@comment.body%>")
+    $("#cmnt_update_div<%=@comment.id%>").toggle();
+<%end%>
