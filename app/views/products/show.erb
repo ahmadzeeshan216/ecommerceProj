@@ -30,20 +30,34 @@
             <li><span class="productinfo-tax">Serial Number: <%= @product.serial_number%> </span></>
           </ul>
           <hr>
-          
+           <input type="hidden" id="availableQuantity" value="<%= @product.quantity%>">
+
+           <%= form_for :item , url:cart_items_path(), remote: :true do |f| %>
+
+            <%= f.text_field :price, type: "hidden", value: @product.price %>
+            <%= f.text_field :product_id, type: "hidden", value: @product.id  %>
           
           <div id="product">
             <div class="form-group">
-              <label class="control-label qty-label" for="input-quantity">Qty</label>
-              <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control productpage-qty" />
-              <input type="hidden" name="product_id" value="48" />
+        
               <div class="btn-group">
-                <button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
-                <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart">Add to Cart</button>
-                <button type="button" data-toggle="tooltip" class="btn btn-default compare" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+              
+                <div class="row">
+                 
+                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="minusQuantity()" >-</button></div>
+                  <div class="col-sm-3"> <%= f.text_field :quantity, id: "quantity", style: "width:50px", value: "0", readonly: :true %>  </div>
+                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity()">+</button></div>
+                </div>
+              </div>
+
+              <div class="btn-group">
+               <div class="row">
+                <button type="submit" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart">Add to Cart</button>
+               </div>
               </div>
             </div>
           </div>
+          <%end%>
         </div>
       </div>
         
@@ -132,6 +146,8 @@
   </div>
 
 <script>
+
+ 
 
 var slideIndex = 1;
 showDivs(slideIndex);

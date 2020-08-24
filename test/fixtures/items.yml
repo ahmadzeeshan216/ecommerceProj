@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quantity: 1
+  price: 1
+  
+d
+;
+exie
+: MyString
+
+two:
+  quantity: 1
+  price: 1
+  
+d
+;
+exie
+: MyString

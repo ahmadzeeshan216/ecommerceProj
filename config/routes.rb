@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   }
   resources :products
   resources :comments
+  resources :cart_items
  
   get "myaccount" => "account#index"
   get "search" => "home#search"
