@@ -1,0 +1,12 @@
+ 
+ <div class="container">
+ <!--Grid row-->
+  
+
+    <% @list.each do |item| %>
+        <%= render partial: "cart_items/item", locals: {item: item} %>
+    <% end%>
+
+
+
+  </div>

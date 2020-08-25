@@ -10,9 +10,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+   def create
+     delteCartSeesion
+     super
+   end
 
   # GET /resource/edit
   # def edit
@@ -59,4 +60,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+
+  def delteCartSeesion
+    if session[:cart]
+      session.delete(:cart)
+     end
+     puts ''
+     if session[:cart_obj]
+      session.delete(:cart_obj)
+     end
+  end
 end

@@ -23,10 +23,6 @@
             <div class="form-inline">
                 <div class="input-group">                    
                     <div class="input-group-append">
-                       
-                            
-                    
-                       
                          <form action="/search" method="get">
 
                             <input name="search" class="form-control"/>
@@ -38,7 +34,7 @@
                 </div>
             </div>
             <div class="navbar-nav">
-               
+               <a href="/cart_items/" style="padding-right:50px">  <i class="fa fa-shopping-cart" style="font-size:28px;color:white"> my cart </i> </a>
                  <%if user_signed_in?%>
 
                   <%=link_to "My Account" , myaccount_path, class: "nav-item nav-link"%>

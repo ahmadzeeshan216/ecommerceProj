@@ -1,0 +1,37 @@
+<!--Grid column-->
+
+    <div  id="single_item<%=item.id%>"> 
+      <div class="row">
+          <div class="col-sm-2">
+            
+                <%= image_tag url_for(item.product.images[0]), :style => "height:120px;width:120px" %>
+              
+          </div>
+            <div class="col-sm-10">
+                
+                  <div>
+                    <h5><%= item.product.name %></h5>
+                    <strong> Price per Item:  <%= item.price %> Rs</strong>
+                  </div>
+                 
+                    <div class="row">
+                        
+                        <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="minusQuantity()" >-</button></div>
+                        <div class="col-sm-3"> <input id="quantity" style="width:110px" value="<%= item.quantity %>" readonly/>  </div>
+                        <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity()">+</button></div>
+                        <div class="col-sm-4"><p> </p></div>
+                        <div class="col-sm-3"><%= link_to "Edit", cart_items_path ,class: "btn btn-warning btn-sm"%></div>
+                    </div>
+
+
+                    <div class="row">    
+                        <div class="col-sm-9"><p> </p></div>
+                         <div class="col-sm-3"><%= button_to "delete", { :controller => 'cart_items',:action => 'destroy', id: item.id}, method: :delete, remote: :true , class: "btn btn-danger btn-sm" %> </div>
+                        
+                     </div>
+                   
+            </div>
+      </div>
+    </div>
+  
+    <!--Grid column-->

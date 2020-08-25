@@ -9,14 +9,32 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+   def create
+     delteCartSeesion
+
+     super
+     cart = current_user.cart
+
+     if !cart.nil?
+      session[:cart_id]=cart.id
+      items=cart.items
+      if !items.nil?
+        session[:cart]=Array.new
+        items.each do |i|
+          session[:cart].push(i)
+        end
+       end
+     end
+
+     
+
+   end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+   def destroy
+    delteCartSeesion
+    super
+   end
 
   # protected
 
@@ -24,4 +42,16 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  private
+
+  def delteCartSeesion
+    if session[:cart]
+      session.delete(:cart)
+     end
+     puts ''
+     if session[:cart_obj]
+      session.delete(:cart_obj)
+     end
+  end
 end

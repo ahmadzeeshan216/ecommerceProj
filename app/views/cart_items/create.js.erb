@@ -1,6 +1,6 @@
 <% if @item.errors.any? %>
-    $("#error_div").html('<%= j render partial: "shared/error_partial", locals: {object: @item} %>')
+    $("#message_div").html('<%= j render partial: "shared/error_partial", locals: {object: @item} %>')
 <%else%>
-    
+    $("#message_div").html('<%= j render partial: "shared/flash_messages" %>')
 <%end%>
 
