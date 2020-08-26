@@ -1,1 +1,8 @@
 $("#single_item<%=params[:id]%>").hide()
+$("#total_price_input_box").val('<%= @total %>')
+$("#total_price_span").html('<%= @total %>')
+discountPercent=$("#discount_input_box").val()
+discountVal=<%= @total %> * discountPercent
+payable=<%= @total %> -discountVal
+$("#payable_amount_input_box").val(parseInt(payable))
+$("#payable_amount_span").html(parseInt(payable))

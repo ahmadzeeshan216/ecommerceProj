@@ -1,0 +1,12 @@
+<% if @discountPercent != nil%>
+    $("#discount_input_box").val('<%=@discountPercent%>')
+    $("#discount_span").html('<%=@discountPercent.to_f * 100%>')
+    total=parseInt($("#total_price_input_box").val())
+    discountVal=<%= @discountPercent %> * total
+    payable = total - discountVal
+    $("#payable_amount_input_box").val(parseInt(payable))
+    $("#payable_amount_span").html(parseInt(payable))
+    $("#message_div").html('<%= j render partial: "shared/flash_messages" %>')
+<% else %>
+    $("#message_div").html('<%= j render partial: "shared/custom_error_messages" %>')
+<%end%>

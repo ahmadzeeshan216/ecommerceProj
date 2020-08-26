@@ -8,23 +8,22 @@ function cmnt_edit_btn_click(id) {
 }
 
 
-function minusQuantity() {
+function minusQuantity(id) {
     $(document).ready(function() {
-        quantity = parseInt($("#quantity").val())
+        quantity = parseInt($("#quantity_" + id).val())
         if (quantity > 0) {
             quantity--;
-            $("#quantity").val(quantity)
+            $("#quantity_" + id).val(quantity)
         }
     });
 }
 
-function plusQuantity() {
+function plusQuantity(availableQuantity, id) {
     $(document).ready(function() {
-        quantity = parseInt($("#quantity").val())
-        availableQuantity = parseInt($("#availableQuantity").val())
+        quantity = parseInt($("#quantity_" + id).val())
         if (availableQuantity > quantity) {
             quantity++;
-            $("#quantity").val(quantity)
+            $("#quantity_" + id).val(quantity)
         } else {
             alert("cannot add more products")
         }

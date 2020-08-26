@@ -1,7 +1,8 @@
 
-<div class="col-sm-3" id="single_product_<%=product.id%>" >
+<div class="col-sm-3 item_card" id="single_product_<%=product.id%>" >
+	<a href="products/<%=product.id%>" >
 		<div href="#" class="card card-product-grid" style="border-radius:25px">
-			<a href="products/<%=product.id%>" class="img-wrap"> <%= image_tag url_for(product.images[0]), :style => "height:200px;width:100%" ,:title => product.name %> </a>
+		 <%= image_tag url_for(product.images[0]), :style => "height:200px;width:100%" ,:title => product.name %> 
 		</div>
 
         <div class="card-body">
@@ -18,5 +19,5 @@
            
             
         </div>
-
+    </a>
 </div> <!-- col.// -->

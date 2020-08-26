@@ -1,3 +1,4 @@
+require 'coupon'
 class CartItemsController < ApplicationController
     def create
         if !session[:cart]
@@ -30,6 +31,26 @@ class CartItemsController < ApplicationController
         end
     end
 
+    def update
+        @item=Item.find(params[:id])
+        @item.update(quantity: params[:quantity])
+
+        if !@item.errors.any?
+            hash=session[:cart]
+            hash.each do |o|
+                if o.fetch("id") == @item.id
+                    o["quantity"]=@item.quantity
+                end
+            end
+            flash.now[:message]="updated"
+        end
+        @total= priceSum
+        respond_to do |format|
+            format.js { render :update}
+            format.html
+            format.json {render json: {r: "made"}}
+        end
+    end
 
     def index
         @list=Array.new
@@ -40,6 +61,7 @@ class CartItemsController < ApplicationController
                 item=Item.new(o)
                 @list.push(item)
             end
+            
         end
 
     end
@@ -55,6 +77,8 @@ class CartItemsController < ApplicationController
             end
         end
 
+        @total= priceSum
+
         respond_to do |format|
             format.js { render :destroy}
             format.html
@@ -62,6 +86,25 @@ class CartItemsController < ApplicationController
         end
     end
 
+    def apply_coupon
+
+        @coupons_hash = {"DEVSINC" => ".5", "PAKARMY" => ".3"}
+        @key=params[:coupon]
+        @coupons_hash[@key]
+        
+        if @coupons_hash.key?(@key)
+            @discountPercent=@coupons_hash[@key].to_f
+            flash.now[:message]="Coupon applied, you have got discount of "+(@discountPercent * 100).to_s+" percent"
+        else
+            @discountPercent=nil
+            flash.now[:message]="Invalid coupon"
+        end
+        respond_to do |format|
+            format.js { render :apply_coupon}
+            format.html
+            format.json {render json: {r: "made"}}
+        end
+    end
     private
 
     def cart_item_params

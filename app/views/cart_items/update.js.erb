@@ -1,0 +1,12 @@
+<% if @item.errors.any? %>
+    $("#message_div_<%=@item.id%>").html('<%= j render partial: "shared/error_partial", locals: {object: @item} %>')
+<%else%>
+    $("#message_div_<%=@item.id%>").html('<%= j render partial: "shared/flash_messages" %>')
+    $("#total_price_input_box").val('<%= @total %>')
+    $("#total_price_span").html('<%= @total %>')
+    discountPercent=parseFloat($("#discount_input_box").val())
+    discountVal=<%= @total %> * discountPercent
+    payable=<%= @total %> -discountVal
+    $("#payable_amount_input_box").val(parseInt(payable))
+    $("#payable_amount_span").html(parseInt(payable))
+<%end%>

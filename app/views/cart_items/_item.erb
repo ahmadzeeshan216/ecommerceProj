@@ -1,35 +1,42 @@
 <!--Grid column-->
 
-    <div  id="single_item<%=item.id%>"> 
+    <div  id="single_item<%=item.id%>" class="cart_item_card">
+     <div id="message_div_<%=item.id%>" >  </div> 
       <div class="row">
+     
           <div class="col-sm-2">
             
-                <%= image_tag url_for(item.product.images[0]), :style => "height:120px;width:120px" %>
+                <%= image_tag url_for(item.product.images[0]), :style => "height:150px;width:150px" %>
               
           </div>
             <div class="col-sm-10">
                 
                   <div>
-                    <h5><%= item.product.name %></h5>
-                    <strong> Price per Item:  <%= item.price %> Rs</strong>
+                    <h3><strong><%= item.product.name %></strong></h3>
+                    <h5> Price per Item:  <%= item.price %> Rs</h5>
                   </div>
                  
-                    <div class="row">
-                        
-                        <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="minusQuantity()" >-</button></div>
-                        <div class="col-sm-3"> <input id="quantity" style="width:110px" value="<%= item.quantity %>" readonly/>  </div>
-                        <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity()">+</button></div>
+                    <% availableQuantity = item.product.quantity%>
+
+                      <%= form_tag url_for(:controller => 'cart_items', :action => 'update', :id => item.id ), remote: :true, method: :patch  do |f| %>
+                      <div class="row">
+                        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                        <div class="col-sm-2"> <h5> Quantity: </h5> </div>
+                        <div class="col-sm-1"><button type="button"  class="btn btn-default"  onClick="minusQuantity(<%=item.id%>)" >-</button></div>
+                        <div class="col-sm-1"> <input name="quantity" id="quantity_<%=item.id%>" style="width:50px" value="<%= item.quantity %>" readonly/>  </div>
+                        <div class="col-sm-1"><button type="button"  class="btn btn-default"  onClick="plusQuantity(<%=availableQuantity%>,<%=item.id%>)">+</button></div>
                         <div class="col-sm-4"><p> </p></div>
-                        <div class="col-sm-3"><%= link_to "Edit", cart_items_path ,class: "btn btn-warning btn-sm"%></div>
-                    </div>
+                        <div class="col-sm-3"><%= button_to "Update", cart_items_path ,class: "btn btn-warning btn-sm", type: "submit"%></div>
+                       
+                      </div>
+                      <%end%>
 
-
-                    <div class="row">    
+                        <div class="row">    
                         <div class="col-sm-9"><p> </p></div>
                          <div class="col-sm-3"><%= button_to "delete", { :controller => 'cart_items',:action => 'destroy', id: item.id}, method: :delete, remote: :true , class: "btn btn-danger btn-sm" %> </div>
                         
                      </div>
-                   
+     
             </div>
       </div>
     </div>

@@ -45,9 +45,9 @@
               
                 <div class="row">
                  
-                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="minusQuantity()" >-</button></div>
-                  <div class="col-sm-3"> <%= f.text_field :quantity, id: "quantity", style: "width:50px", value: "0", readonly: :true %>  </div>
-                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity()">+</button></div>
+                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="minusQuantity(<%=@product.id%>)" >-</button></div>
+                  <div class="col-sm-3"> <%= f.text_field :quantity, id: "quantity_"+@product.id.to_s, style: "width:50px", value: "0", readonly: :true %>  </div>
+                  <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity(<%=@product.quantity%>,<%=@product.id%>)">+</button></div>
                 </div>
               </div>
 
