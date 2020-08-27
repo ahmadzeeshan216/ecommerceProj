@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
     belongs_to :purchaseable, polymorphic: :true, optional: true
     belongs_to :product
-    after_initialize :check_quantity
+    # after_initialize :check_quantity
     validate :user_cannot_add_his_own_product_to_cart
     validates :quantity, numericality: { greater_than: 0 }
 
@@ -11,9 +11,9 @@ class Item < ApplicationRecord
         end
     end
 
-    def check_quantity
-        if quantity==0
-            errors.add(:quantity , " can't be zero")
-        end
-    end
+    # def check_quantity
+    #     if quantity.zero?
+    #         errors.add(:quantity , " can't be zero")
+    #     end
+    # end
 end

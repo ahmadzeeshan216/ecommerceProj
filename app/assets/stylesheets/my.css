@@ -1,34 +1,35 @@
-.double_boarder{
+.double_boarder {
     border-style: double;
 }
-.dashed_boarder{
+
+.dashed_boarder {
     border-style: dashed;
 }
-.item_card
-{
+
+.item_card {
     border-radius: 10px;
     border-style: double;
-    background-color:#F0F0F0;
+    background-color: #F0F0F0;
 }
-.cart_item_card
-{
+
+.cart_item_card {
     border-radius: 0px;
     border-style: double;
-    background-color:#F0F0F0;
-    margin:10px;
-    padding:5px;
+    background-color: #F0F0F0;
+    margin: 10px;
+    padding: 5px;
 }
-.price_show
-{
+
+.price_show {
     border-style: dashed;
-    padding:10px;
-    margin:10px;
+    padding: 10px;
+    margin: 10px;
 }
-.color_red
-{
-    color:red
+
+.color_red {
+    color: red
 }
-.coupons
-{
-    margin:20px;
+
+.coupons {
+    margin: 20px;
 }

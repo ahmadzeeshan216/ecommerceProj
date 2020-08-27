@@ -11,8 +11,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
    def create
-     delteCartSeesion
      super
+     if session[:cart]
+      hash=session[:cart]
+      cart=current_user.build_cart
+      hash.each do |o|
+        Item.find(o.fetch("id")).purchaseable=cart
+      end
+    end
    end
 
   # GET /resource/edit
@@ -60,15 +66,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
-  private
-
-  def delteCartSeesion
-    if session[:cart]
-      session.delete(:cart)
-     end
-     puts ''
-     if session[:cart_obj]
-      session.delete(:cart_obj)
-     end
-  end
 end

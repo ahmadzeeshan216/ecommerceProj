@@ -1,15 +1,16 @@
-require 'coupon'
 class CartItemsController < ApplicationController
     def create
         if !session[:cart]
             session[:cart]=Array.new
             if user_signed_in?
-                @cart=current_user.build_cart
+                @cart = current_user.cart
+                @cart = current_user.build_cart if @cart.nil?
                 @cart.save
                 session[:cart_id]=@cart.id
             end
         end
 
+        # 
         if user_signed_in?
             @cart=Cart.find session[:cart_id]
             @item=@cart.items.create(cart_item_params)
@@ -87,18 +88,17 @@ class CartItemsController < ApplicationController
     end
 
     def apply_coupon
-
-        @coupons_hash = {"DEVSINC" => ".5", "PAKARMY" => ".3"}
+        @coupons_hash = {'DEVSINC' => '.5', 'PAKARMY' => '.3'} 
         @key=params[:coupon]
-        @coupons_hash[@key]
-        
+
         if @coupons_hash.key?(@key)
             @discountPercent=@coupons_hash[@key].to_f
-            flash.now[:message]="Coupon applied, you have got discount of "+(@discountPercent * 100).to_s+" percent"
+            flash.now[:message]="Coupon applied, you have got discount of #{(@discountPercent * 100).to_s} percent"
         else
             @discountPercent=nil
             flash.now[:message]="Invalid coupon"
         end
+
         respond_to do |format|
             format.js { render :apply_coupon}
             format.html
