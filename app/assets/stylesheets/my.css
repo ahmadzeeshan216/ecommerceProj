@@ -33,3 +33,23 @@
 .coupons {
     margin: 20px;
 }
+
+.fixed-height {
+    max-height: 200px;
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.color-dark-brown {
+    color: #4D281D
+}
+
+.background-color-dark-brown {
+    background-color: #4D281D
+}

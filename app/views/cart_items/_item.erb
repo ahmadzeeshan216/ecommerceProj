@@ -26,14 +26,14 @@
                         <div class="col-sm-1"> <input name="quantity" id="quantity_<%=item.id%>" style="width:50px" value="<%= item.quantity %>" readonly/>  </div>
                         <div class="col-sm-1"><button type="button"  class="btn btn-default"  onClick="plusQuantity(<%=availableQuantity%>,<%=item.id%>)">+</button></div>
                         <div class="col-sm-4"><p> </p></div>
-                        <div class="col-sm-3"><%= button_to "Update", cart_items_path ,class: "btn btn-warning btn-sm", type: "submit"%></div>
+                        <div class="col-sm-3"><%= button_to "Update", cart_items_path ,class: "btn btn-primary btn-sm", type: "submit"%></div>
                        
                       </div>
                       <%end%>
 
                         <div class="row">    
                         <div class="col-sm-9"><p> </p></div>
-                         <div class="col-sm-3"><%= button_to "delete", { :controller => 'cart_items',:action => 'destroy', id: item.id}, method: :delete, remote: :true , class: "btn btn-danger btn-sm" %> </div>
+                         <div class="col-sm-3"><%= button_to "delete", { :controller => 'cart_items',:action => 'destroy', id: item.id}, method: :delete, remote: :true , class: "btn btn-primary btn-sm" %> </div>
                         
                      </div>
      

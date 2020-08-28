@@ -6,7 +6,6 @@ class Product < ApplicationRecord
     belongs_to :user
     has_many :comments 
     has_many_attached :images 
-    has_many :items
-    
+    has_many :items, dependent: :delete_all 
     
 end

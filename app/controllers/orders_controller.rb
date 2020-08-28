@@ -1,10 +1,11 @@
 class OrdersController < ApplicationController
-    before_action :authenticate_user!, only:[:create]
+		before_action :authenticate_user!, only:[:create]
+		
     def create
         
 		@amount = params[:payable_amount]
 
-		Stripe.api_key = 'sk_test_51HL27CHCd5LMgwIM98sqapqsMkGNKIpGSC7rwTJrMqQw6VmvPanK5AQqxvvrsUmhkILkQ8bLuBDOGV6vESKB12iD00ofys5t9x'
+	
 
 		token =	Stripe::Token.create({
 			card: {
@@ -26,11 +27,10 @@ class OrdersController < ApplicationController
 			currency: 'usd',
 		})
 
-		#rescue Stripe::CardError => e
-		#	flash[:message] = e.message
-		#	redirect_to cart_items_path
-		#end
-				
+	rescue Stripe::CardError => e
+		flash[:message] = e.message
+		redirect_to cart_items_path
+	else
 		create_order
 
     end

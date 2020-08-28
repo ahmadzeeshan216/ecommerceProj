@@ -14,10 +14,10 @@ class ProductsController < ApplicationController
     end
     
     def create
-        @product=current_user.products.build(productParams)
-        @product.serial_number=SecureRandom.hex(5)
+        @product = current_user.products.build(productParams)
+        @product.serial_number = SecureRandom.uuid
 
-        if(@product.save)
+        if @product.save
             redirect_to @product
         else
             render 'new'
@@ -32,7 +32,7 @@ class ProductsController < ApplicationController
         
         @product=Product.find(params[:id])
 
-        if(@product.update(productParams))
+        if @product.update(productParams)
             redirect_to @product
         else
             render 'edit'

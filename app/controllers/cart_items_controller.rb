@@ -1,4 +1,19 @@
 class CartItemsController < ApplicationController
+
+    def index
+        @list=Array.new
+        @total= priceSum
+        if session[:cart]
+            hash=session[:cart]
+            hash.each do |o|
+                item=Item.new(o)
+                @list.push(item)
+            end
+            
+        end
+
+    end
+
     def create
         if !session[:cart]
             session[:cart]=Array.new
@@ -44,26 +59,12 @@ class CartItemsController < ApplicationController
             end
             flash.now[:message]="updated"
         end
-        @total= priceSum
+        @total = priceSum
         respond_to do |format|
             format.js { render :update}
             format.html
             format.json {render json: {r: "made"}}
         end
-    end
-
-    def index
-        @list=Array.new
-        @total= priceSum
-        if session[:cart]
-            hash=session[:cart]
-            hash.each do |o|
-                item=Item.new(o)
-                @list.push(item)
-            end
-            
-        end
-
     end
 
     def destroy

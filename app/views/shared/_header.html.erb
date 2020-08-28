@@ -1,54 +1,67 @@
+
 <header>
-
- <nav class="navbar navbar-expand-md navbar-light bg-secondary">
-        <a href="#" class="navbar-brand">Brand</a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-            <div class="navbar-nav">
+  <div class="header-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="top-left pull-left">
+             
+              
+              <div class="search-box">
+              
+               <form action="/search" method="get">
+                    <input name="search"  class="input-text" placeholder="Search By Products.."/>
+                    <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>                    
+                </form>     
+               
+              </div>
+            
+          </div>
+          <div class="top-right pull-right">
+            <div id="top-links" class="nav pull-right">
+              <ul class="list-inline">
                 
-                <%=link_to "Home" , root_path, class: "nav-item nav-link"%>
-                <a href="#" class="nav-item nav-link">Profile</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Messages</a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Inbox</a>
-                        <a href="#" class="dropdown-item">Sent</a>
-                        <a href="#" class="dropdown-item">Drafts</a>
-                    </div>
-                </div>
-            </div>
-            <div class="form-inline">
-                <div class="input-group">                    
-                    <div class="input-group-append">
-                         <form action="/search" method="get">
+                <%if user_signed_in?%>
 
-                            <input name="search" class="form-control"/>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                            
-                        </form>                           
-                            
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-nav">
-               <a href="/cart_items/" style="padding-right:50px">  <i class="fa fa-shopping-cart" style="font-size:28px;color:white"> my cart </i> </a>
-                 <%if user_signed_in?%>
-
-                  <%=link_to "My Account" , myaccount_path, class: "nav-item nav-link"%>
-                  <%= button_to "logout", destroy_user_session_path, method: :delete , class: " nav-item btn btn-default btn-sm" %> 
+                  <%=link_to "My Account" , myaccount_path%>
+                  <li><%= button_to "logout", destroy_user_session_path, method: :delete  %> </li>
                               
                 <%else%>
 
-                  <%= link_to "Register",  new_user_registration_path , class: "nav-item nav-link"%>
-                  <%=link_to "Login" , new_user_session_path , class: "nav-item nav-link"%>
+                  <li><%= link_to "Register",  new_user_registration_path %></li>
+                  <%=link_to "Login" , new_user_session_path%>
 
                 <% end %>
+              </ul>
+              
             </div>
+          </div>
         </div>
-    </nav>
-<div style="height:20px">
-</div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="header-inner">
+      <div class="col-sm-4 col-xs-6 header-left">
+        <div class="shipping">
+          <div class="shipping-img"></div>
+          <div class="shipping-text">(+91) 000-1233<br>
+            <span class="shipping-detail">24/7 Online Support</span></div>
+        </div>
+      </div>
+      <div class="col-sm-4 col-xs-12 header-middle">
+        <div class="header-middle-top">
+          <div id="logo"> <a href="/"> <%= image_tag "/assets/logo.png",  class: "img-responsive" %></a> </div>
+        </div>
+      </div>
+      <div class="col-sm-4 col-xs-12 header-right">
+        <div id="cart" class="btn-group btn-block">
+          <a href="/cart_items/" class="btn btn-inverse btn-block btn-lg dropdown-toggle cart-dropdown-button "> <span id="cart-total"><span class="cart-title color-dark-brown">Shopping Cart</span><p><i class="fa fa-shopping-cart color-dark-brown" style="font-size:36px;margin-left:40px"></i></p></p></a>
+          
+               
+        </div>
+      </div>
+    </div>
+   
+  </div>
 </header>
