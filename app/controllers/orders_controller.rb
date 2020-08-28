@@ -4,6 +4,8 @@ class OrdersController < ApplicationController
         
 		@amount = params[:payable_amount]
 
+		Stripe.api_key = 'sk_test_51HL27CHCd5LMgwIM98sqapqsMkGNKIpGSC7rwTJrMqQw6VmvPanK5AQqxvvrsUmhkILkQ8bLuBDOGV6vESKB12iD00ofys5t9x'
+
 		token =	Stripe::Token.create({
 			card: {
 				number: params[:card_no],
@@ -52,10 +54,10 @@ class OrdersController < ApplicationController
 		@order=current_user.orders.build(orderParams)
 		
 		params[:ids].each do |id|
-			@item = Item.find(id)
-			@item.product.quantity = @item.product.quantity - @item.quantity
-			@item.purchaseable=@order
-			@item.save
+			@item = Item.includes(:product).find(id)
+			product=@item.product
+			@item.update(purchaseable: @order)
+			product.update(quantity: product.quantity - @item.quantity)
 		end
 
 		if !@item.errors.any? && !@order.errors.any?
