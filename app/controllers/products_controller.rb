@@ -15,6 +15,7 @@ class ProductsController < ApplicationController
     
     def create
         @product=current_user.products.build(productParams)
+        @product.serial_number=SecureRandom.hex(5)
 
         if(@product.save)
             redirect_to @product

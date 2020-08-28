@@ -10,13 +10,12 @@ class CartItemsController < ApplicationController
             end
         end
 
-        # 
+        
         if user_signed_in?
             @cart=Cart.find session[:cart_id]
             @item=@cart.items.create(cart_item_params)
         else
             @item=Item.create(cart_item_params)
-            
         end
     
         if !@item.errors.any?
