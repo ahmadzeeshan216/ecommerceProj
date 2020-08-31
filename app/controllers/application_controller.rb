@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-    after_action :store_action
+    after_action :store_action, if: 
   
     def store_action
       return unless request.get? 

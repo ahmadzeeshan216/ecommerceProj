@@ -3,6 +3,7 @@ class ProductsController < ApplicationController
 
     def index
         @products=Product.where(user_id: current_user.id)
+        # current_user.products
     end
     
     def new
@@ -14,8 +15,7 @@ class ProductsController < ApplicationController
     end
     
     def create
-        @product = current_user.products.build(productParams)
-        @product.serial_number = SecureRandom.uuid
+        @product = current_user.products.build(product_params)
 
         if @product.save
             redirect_to @product
@@ -29,10 +29,15 @@ class ProductsController < ApplicationController
     end
 
     def update
-        
         @product=Product.find(params[:id])
 
-        if @product.update(productParams)
+        if params[:images].present?
+            params[:images].each do |image|
+                @product.images.attach(image)
+            end
+        end
+
+        if @product.update(product_params)
             redirect_to @product
         else
             render 'edit'
@@ -47,12 +52,30 @@ class ProductsController < ApplicationController
         respond_to do |format|
             format.js { render :destroy}
             format.html
+            format.json {render json: {r: "made"}}
         end
     end
 
-    private def productParams
-        params.require(:product).permit(:name,:description,:user_id,:quantity,:price,:images => [])
+    def image_destroy
+        @product=Product.find(params[:product_id])
+        attachment=@product.images.find(params[:image_id])
+        attachment.purge
+
+        respond_to do |format|
+            format.js { render :image_destroy}
+            format.html
+            format.json {render json: {r: "made"}}
+        end
     end
 
+    private 
+    
+    def product_params
+        params.require(:product).permit(:name, :description, :user_id, :quantity, :price, :images => [])
+    end
+
+    def product_edit_params
+        params.require(:product).permit(:name, :description, :user_id, :quantity, :price, :images => [])
+    end
 
 end

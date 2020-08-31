@@ -1,19 +1,16 @@
-
-
-
-
-
 <div class="product-layout product-list col-lg-3 " id="single_product_<%=product.id%>" >
-          <div class=" product-thumb">
-            <div class="image product-imageblock"> <a href="products/<%=product.id%>"><%= image_tag url_for(product.images[0]), style: "height:200px;width:250px" ,title: product.name,  class: "img-responsive" %> </a>
-              
-            </div>
-            <div class="caption product-detail">
-              
-             <p class="title product-price"><span class="price"> <%= product.name%>  </span></p>
-             <p class=" product-price"><span class="">Price : <%= product.price%> Rs  </span></p>
-            </div>
-            
-          
-           </div>
+  <div class=" product-thumb">
+    <div class="image product-imageblock"> 
+    <%= link_to product do %>
+      <%= image_tag url_for(product.images[0]), style: "height:200px;width:250px" ,title: product.name,  class: "img-responsive" %> </a>
+    <% end %>
+    </div>
+    <div class="caption product-detail">
+      
+      <p class="title product-price"><span class="price"> <%= product.name%>  </span></p>
+      <p class=" product-price"><span class="">Price : <%= product.price%> Rs  </span></p>
+    </div>
+    
+  
+    </div>
 </div>

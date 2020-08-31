@@ -39,6 +39,7 @@
             <%= f.text_field :product_id, type: "hidden", value: @product.id  %>
           
           <div id="product">
+            <%if @product.quantity != 0%>
             <div class="form-group">
         
               <div class="btn-group">
@@ -50,20 +51,21 @@
                   <div class="col-sm-1"><button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" onClick="plusQuantity(<%=@product.quantity%>,<%=@product.id%>)">+</button></div>
                 </div>
               </div>
-
+              
               <div class="btn-group">
                <div class="row">
                 <button type="submit" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart">Add to Cart</button>
                </div>
               </div>
             </div>
+            <%else%>
+                <h4 class="color-dark-brown"> Out of stock </h4>
+            <%end%>
           </div>
           <%end%>
         </div>
       </div>
         
-
-
 
 <div class="row margin-top">
     <div id="content" class="col-sm-12">
@@ -170,12 +172,3 @@ function showDivs(n) {
     x[slideIndex - 1].style.display = "block";
 }
 </script>
-
-
-<script>
-
-
-
- 
-
- </script>

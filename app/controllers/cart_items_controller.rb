@@ -48,18 +48,15 @@ class CartItemsController < ApplicationController
 
     def update
         @item=Item.find(params[:id])
-        @item.update(quantity: params[:quantity])
 
-        if !@item.errors.any?
+        if @item.update(quantity: params[:quantity])
             hash=session[:cart]
-            hash.each do |o|
-                if o.fetch("id") == @item.id
-                    o["quantity"]=@item.quantity
-                end
+            hash.each do |o|                
+                o["quantity"] = @item.quantity if o.fetch("id") == @item.id
             end
             flash.now[:message]="updated"
         end
-        @total = priceSum
+        @total = priceSum 
         respond_to do |format|
             format.js { render :update}
             format.html
@@ -112,13 +109,12 @@ class CartItemsController < ApplicationController
     end
 
     def priceSum
-        sum=0
-        if session[:cart]
-            hash=session[:cart]
-            hash.each do |o|
-                sum=sum + ( o.fetch("price") * o.fetch("quantity") )
-            end
+        sum = 0
+        
+        session[:cart]&.each do |o|
+            sum += o.fetch("price") * o.fetch("quantity")
         end
+
         sum
     end
 end

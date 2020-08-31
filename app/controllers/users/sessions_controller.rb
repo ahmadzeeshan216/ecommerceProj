@@ -36,16 +36,18 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def take_items_into_session
-      items=@cart.items if !@cart.nil?
-      if !items.nil?
-        if !session[:cart]
-          session[:cart]=Array.new
-          session[:cart_id]=@cart.id
-        end
-        items.each do |i|
-          session[:cart].push(i)
-        end
-      end
+    items = @cart&.items
+    
+    return if items.nil?
+
+    if !session[:cart]
+      session[:cart]=Array.new
+      session[:cart_id]=@cart.id
+    end
+    
+    items.each do |i|
+      session[:cart].push(i)
+    end
   end
 
   def map_session_items_to_cart
@@ -55,17 +57,18 @@ class Users::SessionsController < Devise::SessionsController
         @cart=current_user.build_cart
       end
       hash.each do |o|
-        item = Item.find(o['id']).update(purchaseable: @cart)
+        Item.find(o['id']).update(purchaseable: @cart)
       end
     end
   end
   
-  def delteCartSeesion
+  def delteCartSeesion # correct these spellings
     if session[:cart]
       session.delete(:cart)
      end
+
      if session[:cart_obj]
-      session.delete(:cart_obj)
+      session.delete(:cart_obj) # review here
      end
   end
 

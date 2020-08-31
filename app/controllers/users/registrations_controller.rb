@@ -13,9 +13,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
    def create
      super
      if session[:cart]
-      hash=session[:cart]
       cart=current_user.build_cart
-      hash.each do |o|
+      session[:cart].each do |o|
         Item.find(o.fetch("id")).purchaseable=cart
       end
     end

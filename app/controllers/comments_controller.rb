@@ -3,8 +3,7 @@ class CommentsController < ApplicationController
  
     
     def create
-        @comment=current_user.comments.build(commentParams)
-        @comment.save
+        @comment=current_user.comments.create(commentParams)
        
         respond_to do |format|
             format.js { render :create }

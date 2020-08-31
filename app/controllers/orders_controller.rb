@@ -1,11 +1,10 @@
 class OrdersController < ApplicationController
 		before_action :authenticate_user!, only:[:create]
 		
-    def create
-        
-		@amount = params[:payable_amount]
+	def create
+		#commute here again
 
-	
+		@amount = params[:payable_amount]
 
 		token =	Stripe::Token.create({
 			card: {
@@ -53,6 +52,7 @@ class OrdersController < ApplicationController
 	def create_order
 		@order=current_user.orders.build(orderParams)
 		
+		#try using after_create callback here
 		params[:ids].each do |id|
 			@item = Item.includes(:product).find(id)
 			product=@item.product
@@ -60,9 +60,11 @@ class OrdersController < ApplicationController
 			product.update(quantity: product.quantity - @item.quantity)
 		end
 
+		#fix this
 		if !@item.errors.any? && !@order.errors.any?
 			flash[:message] =" your order has been created"
 			delteCartSeesion
+			@order.save
 			redirect_to root_path  
 		else
 			flash[:message]=@item.errors.full_messages.to_s + @order.errors.full_messages.to_s

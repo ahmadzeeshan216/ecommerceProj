@@ -5,7 +5,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     sessions: 'users/sessions'
   }
-  resources :products
+  resources :products do
+    delete :image_destroy
+  end
   resources :comments
   resources :cart_items
   resources :orders
