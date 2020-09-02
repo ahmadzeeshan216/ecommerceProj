@@ -11,7 +11,7 @@ class Product < ApplicationRecord
 	has_many :items, dependent: :delete_all 
 	
 	def add_serial_number
-		self.serial_number = SecureRandom.uuid
+		self.serial_number = SecureRandom.hex 5
 	end
 	
 end

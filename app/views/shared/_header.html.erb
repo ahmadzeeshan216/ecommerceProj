@@ -9,7 +9,7 @@
               
               <div class="search-box">
               
-               <form action="/search" method="get">
+               <form action="/products/search" method="get">
                     <input name="search"  class="input-text" placeholder="Search By Products.."/>
                     <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>                    
                 </form>     
@@ -23,7 +23,7 @@
                 
                 <%if user_signed_in?%>
 
-                  <%=link_to "My Account" , myaccount_path%>
+                  <%=link_to "My Account" , account_index_path%>
                   <li><%= button_to "logout", destroy_user_session_path, method: :delete  %> </li>
                               
                 <%else%>

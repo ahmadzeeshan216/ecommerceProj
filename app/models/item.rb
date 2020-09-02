@@ -1,19 +1,20 @@
 class Item < ApplicationRecord
     belongs_to :purchaseable, polymorphic: :true, optional: true
     belongs_to :product
-    # after_initialize :check_quantity
-    validate :user_cannot_add_his_own_product_to_cart
-    validates :quantity, numericality: { greater_than: 0 }
+    
+    validate :cannot_add_own_product
+    validate :stock_availability
+    validates :quantity, numericality: {only_integer: true, greater_than: 0}
 
-    def user_cannot_add_his_own_product_to_cart
-        if !purchaseable.nil? && Product.find(product_id).user_id == purchaseable.user_id
+    protected
+
+    def cannot_add_own_product
+        if !purchaseable.nil? && product.user_id == purchaseable.user_id
             errors.add(:user , " can't add his/here own product into cart")
         end
     end
 
-    # def check_quantity
-    #     if quantity.zero?
-    #         errors.add(:quantity , " can't be zero")
-    #     end
-    # end
+    def stock_availability
+        errors.add(:stock , "have not enough products") if quantity > product.quantity
+    end
 end

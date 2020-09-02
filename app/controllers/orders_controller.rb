@@ -1,56 +1,32 @@
+require 'stripe_service.rb'
 class OrdersController < ApplicationController
-		before_action :authenticate_user!, only:[:create]
+	before_action :authenticate_user!, only:[:create]
 		
 	def create
-		#commute here again
-
-		@amount = params[:payable_amount]
-
-		token =	Stripe::Token.create({
-			card: {
-				number: params[:card_no],
-				exp_month: 8,
-				exp_year: 2021,
-				cvc: params[:security_no],
-			},
-		})
-
-		customer = Stripe::Customer.create({
-			source: token,
-		})
 		
-		charge = Stripe::Charge.create({
-			customer: customer.id,
-			amount: @amount,
-			description: 'Rails Stripe customer',
-			currency: 'usd',
-		})
-
-	rescue Stripe::CardError => e
-		flash[:message] = e.message
-		redirect_to cart_items_path
-	else
-		create_order
-
-    end
+		stripe_service = StripeService.new(params)
+		stripe_service.charge
+	
+		if stripe_service.errors
+			flash[:message] = stripe_service.errors
+			redirect_to cart_items_path
+		else
+			create_order
+		end
+ 	end
 
 	private
 
-    def orderParams
+    def order_params
         params.permit(:total_price,:payable_amount,:discount)
     end
 
-    def delteCartSeesion
-        if session[:cart]
-          session.delete(:cart)
-        end
-        if session[:cart_obj]
-          session.delete(:cart_obj)
-        end
+    def delete_cart_session
+		session.delete(:cart) if session[:cart]
 	end
 	
 	def create_order
-		@order=current_user.orders.build(orderParams)
+		@order=current_user.orders.build(order_params)
 		
 		#try using after_create callback here
 		params[:ids].each do |id|
@@ -60,10 +36,9 @@ class OrdersController < ApplicationController
 			product.update(quantity: product.quantity - @item.quantity)
 		end
 
-		#fix this
-		if !@item.errors.any? && !@order.errors.any?
+		if  !@order.errors.any?
 			flash[:message] =" your order has been created"
-			delteCartSeesion
+			delete_cart_session
 			@order.save
 			redirect_to root_path  
 		else

@@ -6,7 +6,7 @@
     $("#total_price_span").html('<%= @total %>')
     discountPercent=parseFloat($("#discount_input_box").val())
     discountVal=<%= @total %> * discountPercent
-    payable=<%= @total %> -discountVal
+    payable=<%= @total %> - discountVal
     $("#payable_amount_input_box").val(parseInt(payable))
     $("#payable_amount_span").html(parseInt(payable))
 <%end%>

@@ -1,120 +1,69 @@
+require 'coupon.rb'
+
 class CartItemsController < ApplicationController
+	before_action :set_item, only: [:update, :destroy]
+	before_action :compute_price_sum, only: [:index]
 
-    def index
-        @list=Array.new
-        @total= priceSum
-        if session[:cart]
-            hash=session[:cart]
-            hash.each do |o|
-                item=Item.new(o)
-                @list.push(item)
-            end
-            
-        end
+	def index
+		@list=[]
+		session[:cart]&.each { |hash_item| @list << Item.new(hash_item) }	
+	end
 
-    end
+	def create
+		session[:cart] = [] if !session[:cart]
+	
+		if user_signed_in?
+			@cart = current_user.cart
+			@cart = current_user.create_cart if @cart.nil?
+			@item=@cart.items.create(cart_item_params)
+		else
+			@item=Item.create(cart_item_params)
+		end
 
-    def create
-        if !session[:cart]
-            session[:cart]=Array.new
-            if user_signed_in?
-                @cart = current_user.cart
-                @cart = current_user.build_cart if @cart.nil?
-                @cart.save
-                session[:cart_id]=@cart.id
-            end
-        end
+		return if @item.errors.any?
+		session[:cart].push(@item)
+		flash.now[:message]="added to cart"
+	end
 
-        
-        if user_signed_in?
-            @cart=Cart.find session[:cart_id]
-            @item=@cart.items.create(cart_item_params)
-        else
-            @item=Item.create(cart_item_params)
-        end
-    
-        if !@item.errors.any?
-            session[:cart].push(@item)
-            flash.now[:message]="added to cart"
-        end
+	def update
+		return if !@item.update(quantity: params[:quantity])
+		session[:cart]&.each { |hash_item| hash_item["quantity"] = @item.quantity if hash_item["id"] == @item.id } 
+		flash.now[:message]="updated"
+		compute_price_sum
+	end
 
+	def destroy
+		return if !@item.destroy
+		session[:cart]&.each { |hash_item| session[:cart].delete(hash_item) if hash_item["id"] == @item.id}	
+		compute_price_sum
+	end
 
-        respond_to do |format|
-            format.js { render :create}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
-    end
+	def apply_coupon
+		if Coupon.all.key?(params[:coupon])
+			@discountPercent = Coupon.all[params[:coupon]].to_f
+			flash.now[:message]="Coupon applied, you have got discount of #{(@discountPercent * 100).to_s} percent"
+		else
+			@discountPercent=nil
+			flash.now[:message]='Invalid coupon'
+		end
+	end
 
-    def update
-        @item=Item.find(params[:id])
+	private
 
-        if @item.update(quantity: params[:quantity])
-            hash=session[:cart]
-            hash.each do |o|                
-                o["quantity"] = @item.quantity if o.fetch("id") == @item.id
-            end
-            flash.now[:message]="updated"
-        end
-        @total = priceSum 
-        respond_to do |format|
-            format.js { render :update}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
-    end
+	def set_item
+		@item = Item.find(params[:id])
+	end
 
-    def destroy
-        @item = Item.find(params[:id])
-        @item.destroy
+	def cart_item_params
+		params.require(:item).permit(:product_id,:price,:quantity)
+	end
 
-        hash=session[:cart]
-        hash.each do |o|
-            if o.fetch("id") == @item.id
-                session[:cart].delete(o)
-            end
-        end
+	def compute_price_sum
+		@total = 0
+		
+		session[:cart]&.each { |hash_item| @total += hash_item["price"] * hash_item["quantity"]}	
 
-        @total= priceSum
+		@total
+	end
 
-        respond_to do |format|
-            format.js { render :destroy}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
-    end
-
-    def apply_coupon
-        @coupons_hash = {'DEVSINC' => '.5', 'PAKARMY' => '.3'} 
-        @key=params[:coupon]
-
-        if @coupons_hash.key?(@key)
-            @discountPercent=@coupons_hash[@key].to_f
-            flash.now[:message]="Coupon applied, you have got discount of #{(@discountPercent * 100).to_s} percent"
-        else
-            @discountPercent=nil
-            flash.now[:message]="Invalid coupon"
-        end
-
-        respond_to do |format|
-            format.js { render :apply_coupon}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
-    end
-    private
-
-    def cart_item_params
-        params.require(:item).permit(:product_id,:price,:quantity)
-    end
-
-    def priceSum
-        sum = 0
-        
-        session[:cart]&.each do |o|
-            sum += o.fetch("price") * o.fetch("quantity")
-        end
-
-        sum
-    end
 end

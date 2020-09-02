@@ -24,11 +24,11 @@
           <hr>
           <ul class="list-unstyled productinfo-details-top">
             
-            <li><span class="productinfo-tax color-dark-brown">Price: </span> <%= @product.price%> Rs</>
+            <li><span class="productinfo-tax color-dark-brown">Price: $<%= @product.price%></span>  
             <hr>
-            <li><span class="productinfo-tax color-dark-brown">Available Quantity:  </span> <%= @product.quantity%></>
+            <li><span class="productinfo-tax color-dark-brown">Available Quantity:  </span> <%= @product.quantity%>
             <hr>
-            <li><span class="productinfo-tax color-dark-brown">Serial Number:  </span> <%= @product.serial_number%></>
+            <li><span class="productinfo-tax color-dark-brown">Serial Number:  </span> <%= @product.serial_number%>
           </ul>
           <hr>
            <input type="hidden" id="availableQuantity" value="<%= @product.quantity%>">

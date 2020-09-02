@@ -1,6 +1,5 @@
  
  <div class="container">
- <!--Grid row-->
    <ul class="breadcrumb">
     <li><a>My Cart</a> </li>
     </ul>
@@ -9,7 +8,7 @@
         <%= render partial: "cart_items/item", locals: {item: item} %>
     <% end%>
 
-  <%= form_tag url_for(:controller => 'cart_items', :action => 'apply_coupon' ), remote: :true, method: :get  do |f| %>
+  <%= form_tag url_for(controller: 'cart_items', action: 'apply_coupon' ), remote: :true, method: :get  do |f| %>
     <div id="message_div"> </div>
     <div class="row coupons">
       <div class="col-lg-2">
@@ -29,6 +28,7 @@
     <% @list.each do |item| %>
         <%= hidden_field_tag 'ids[]', item.id %>
     <% end%>
+    <div class=" price-wrap">
     <div class="row price_show">
       <div class="col-lg-10">
         <strong > Total Price : </strong>
@@ -54,10 +54,9 @@
         <span id="payable_amount_span"><%=@total%></span> Rs.
       </div>
     </div>
+    </div>
 
-    
-
-    <div class="row ">
+    <div class="row price-wrap">
       <div class="col-lg-6 price_show">
 
         <div class="row">

@@ -1,17 +1,21 @@
 class ProductsController < ApplicationController
-    before_action :authenticate_user!, except:[:show]
+    before_action :authenticate_user!, except:[:show, :search]
+    before_action :set_product, only: [:update, :destroy, :edit, :image_destroy]
 
     def index
-        @products=Product.where(user_id: current_user.id)
-        # current_user.products
+        @products = current_user.products if user_signed_in?
     end
     
+    def search
+        @products = Product.search(params[:search])
+    end
+
     def new
-        @product=current_user.products.build
+        @product = current_user.products.build
     end
     
     def show
-        @product=Product.includes(comments: :user).find(params[:id])
+        @product = Product.includes(comments: :user).find(params[:id])
     end
     
     def create
@@ -24,13 +28,7 @@ class ProductsController < ApplicationController
         end
     end
 
-    def edit
-        @product=Product.find(params[:id])
-    end
-
     def update
-        @product=Product.find(params[:id])
-
         if params[:images].present?
             params[:images].each do |image|
                 @product.images.attach(image)
@@ -46,26 +44,12 @@ class ProductsController < ApplicationController
     end
 
     def destroy
-        @product = Product.find(params[:id])
         @product.destroy
-
-        respond_to do |format|
-            format.js { render :destroy}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
     end
 
     def image_destroy
-        @product=Product.find(params[:product_id])
-        attachment=@product.images.find(params[:image_id])
+        attachment = @product.images.find(params[:image_id])
         attachment.purge
-
-        respond_to do |format|
-            format.js { render :image_destroy}
-            format.html
-            format.json {render json: {r: "made"}}
-        end
     end
 
     private 
@@ -76,6 +60,10 @@ class ProductsController < ApplicationController
 
     def product_edit_params
         params.require(:product).permit(:name, :description, :user_id, :quantity, :price, :images => [])
+    end
+
+    def set_product
+        @product = Product.find(params[:id])
     end
 
 end
