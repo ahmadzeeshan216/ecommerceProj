@@ -28,7 +28,6 @@ class OrdersController < ApplicationController
 	def create_order
 		@order=current_user.orders.build(order_params)
 		
-		#try using after_create callback here
 		params[:ids].each do |id|
 			@item = Item.includes(:product).find(id)
 			product=@item.product

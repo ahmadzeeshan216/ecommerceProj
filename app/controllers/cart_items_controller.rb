@@ -2,11 +2,11 @@ require 'coupon.rb'
 
 class CartItemsController < ApplicationController
 	before_action :set_item, only: [:update, :destroy]
-	before_action :compute_price_sum, only: [:index]
+	before_action :set_price, only: [:index]
 
 	def index
 		@list=[]
-		session[:cart]&.each { |hash_item| @list << Item.new(hash_item) }	
+		session[:cart]&.each { |item_id| @list << Item.find(item_id.to_s) }	
 	end
 
 	def create
@@ -21,21 +21,19 @@ class CartItemsController < ApplicationController
 		end
 
 		return if @item.errors.any?
-		session[:cart].push(@item)
+		session[:cart].push(@item.id)
 		flash.now[:message]="added to cart"
 	end
 
 	def update
 		return if !@item.update(quantity: params[:quantity])
-		session[:cart]&.each { |hash_item| hash_item["quantity"] = @item.quantity if hash_item["id"] == @item.id } 
 		flash.now[:message]="updated"
-		compute_price_sum
+		set_price
 	end
 
 	def destroy
 		return if !@item.destroy
-		session[:cart]&.each { |hash_item| session[:cart].delete(hash_item) if hash_item["id"] == @item.id}	
-		compute_price_sum
+		set_price
 	end
 
 	def apply_coupon
@@ -58,12 +56,13 @@ class CartItemsController < ApplicationController
 		params.require(:item).permit(:product_id,:price,:quantity)
 	end
 
-	def compute_price_sum
+	def set_price
 		@total = 0
-		
-		session[:cart]&.each { |hash_item| @total += hash_item["price"] * hash_item["quantity"]}	
 
-		@total
+		session[:cart]&.each do |item_id|
+			item = Item.find(item_id.to_s)
+			@total += item.price * item.quantity
+		end
 	end
 
 end

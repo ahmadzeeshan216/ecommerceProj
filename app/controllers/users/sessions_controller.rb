@@ -21,10 +21,10 @@ class Users::SessionsController < Devise::SessionsController
     
     return if items.nil?
 
-    session[:cart]=Array.new if !session[:cart]
+    session[:cart]=[] if !session[:cart]
     
-    items.each do |i|
-      session[:cart].push(i)
+    items.each do |item|
+      session[:cart].push(item.id)
     end
   end
 
@@ -32,8 +32,8 @@ class Users::SessionsController < Devise::SessionsController
     if session[:cart]
       @cart=current_user.build_cart if @cart.nil?
       
-      session[:cart].each do |o|
-        Item.find(o['id']).update(purchaseable: @cart)
+      session[:cart].each do |item_id|
+        Item.find(item_id.to_s).update(purchaseable: @cart)
       end
     end
   end

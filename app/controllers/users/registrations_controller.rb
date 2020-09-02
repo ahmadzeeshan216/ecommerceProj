@@ -5,7 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       super
       return if !session[:cart] || !user_signed_in?
       cart = current_user.create_cart
-      session[:cart]&.each { |hash_item| Item.find(hash_item["id"]).update(purchaseable: cart)} 
+      session[:cart]&.each { |item_id| Item.find(item_id.to_s).update(purchaseable: cart)} 
    end
 
   protected
